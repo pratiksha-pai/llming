@@ -12,7 +12,8 @@
 # print(answer)
 
 
-
+# llm = OpenAI(openai_api_key=openai_api_key, temperature=0.6, cache=False)
+# llm = OpenAI(openai_api_key=openai_api_key, temperature=0.6, cache=False)
 
 # # prompt_template = PromptTemplate(
 # #     input_variables=["value"],
