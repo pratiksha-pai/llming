@@ -1,1 +1,1 @@
-web: gunicorn langchain_prompting:llming
+web: gunicorn langchain_prompting:application
