@@ -1,1 +1,1 @@
-web: gunicorn langchain_prompting:application
+web: gunicorn langchain_prompting:app
