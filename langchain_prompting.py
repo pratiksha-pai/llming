@@ -10,6 +10,10 @@ from langchain.chains import create_extraction_chain
 
 app = Flask(__name__)
 
+@app.route('/')
+def hello():
+    return "Hello World!"
+
 set_llm_cache(InMemoryCache())
 load_dotenv()
 openai_api_key = os.getenv('OPENAI_API_KEY')
@@ -45,5 +49,9 @@ def process():
 
     return {"extracted data": question}
 
+application = app
+
 if __name__ == '__main__':
     app.run(debug=True)
+
+
