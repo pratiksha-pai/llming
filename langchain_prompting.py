@@ -36,27 +36,28 @@ def process():
 
     value = data.get('key', '')
 
+    # chat_template = ChatPromptTemplate.from_messages([
+    #     ("human", f'So your friend is saying this about how they felt yesterday. "{value}". You need to follow up how they are feeling about it today. You are asking this as a follow up so when you ask how they are feeling about it today, you need to ask it in the past tense. Your follow up should be consice, empathetic and kind')
+    # ])
+
     chat_template = ChatPromptTemplate.from_messages([
-        ("human", f'So your friend is saying this about how they felt yesterday. "{value}". You need to follow up how they are feeling about it today. You are asking this as a follow up so when you ask how they are feeling about it today, you need to ask it in the past tense. Your follow up should be consice, empathetic and kind')
+        ("human", f'Yesterday, your friend shared this: "{value}". Today, kindly and empathetically ask them a brief follow-up question to understand how they feel about it now.')
     ])
+
+    # chat_template = ChatPromptTemplate.from_messages([
+    #     ("human", f'Yesterday, your friend shared this: "{value}". Acknowledge their situation or emotion first, then ask a brief follow-up question about how they feel today.')
+    # ])
+
+    # chat_template = ChatPromptTemplate.from_messages([
+    #     ("human", f'Yesterday, your friend shared this: "{value}". Acknowledge their situation or emotion first, then ask a brief follow-up question about how they feel today.')
+    # ])
+
+
+
     messages = chat_template.format_messages(value=value)
-    request_tokens = sum(len(message.content.split()) for message in messages)  # Counting tokens in the request
-
-    # request_tokens = sum(len(message.split()) for message in messages)  # Counting tokens in the request
-
-    with get_openai_callback() as cb:  # Utilizing the callback to get token counts
-        response = llm(messages)
-    response_tokens = cb.total_tokens - request_tokens  # Calculating response tokens by subtracting request tokens from total tokens
-
-    print(f"Request Tokens: {request_tokens}, Response Tokens: {response_tokens}")
-
-    chain = create_extraction_chain(schema, llm)
-    print("response", response)
-    extracted_data = chain.run(response)
-
-    question = extracted_data[0]["question"] if extracted_data else "No question extracted"
-
-    return jsonify(extracted_data=question, request_tokens=request_tokens, response_tokens=response_tokens)
+    response = llm(messages)
+    question = response.content if response else "No question extracted"
+    return jsonify(extracted_data=question)
 
 if __name__ == '__main__':
     app.run(debug=True)
