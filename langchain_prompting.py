@@ -40,7 +40,7 @@ def process():
     messages = chat_template.format_messages(value=value)
     response = llm(messages)
     question = response.content if response else "No question extracted"
-    return jsonify(extracted_data=question)
+    return jsonify(llmdata=question)
 
 if __name__ == '__main__':
     app.run(debug=True)
